@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Registration App</title>
+  <style>
+    body { font-family: Arial; display:flex; justify-content:center; 
+           align-items:center; height:100vh; background:#f0f2f5; }
+    .form-box { background:white; padding:40px; border-radius:10px; 
+                box-shadow:0 2px 10px rgba(0,0,0,0.1); width:350px; }
+    h2 { text-align:center; color:#333; }
+    input { width:100%; padding:10px; margin:8px 0; 
+            border:1px solid #ddd; border-radius:5px; box-sizing:border-box; }
+    button { width:100%; padding:12px; background:#4CAF50; 
+             color:white; border:none; border-radius:5px; 
+             cursor:pointer; font-size:16px; }
+    button:hover { background:#45a049; }
+    #message { text-align:center; margin-top:10px; }
+  </style>
+</head>
+<body>
+  <div class="form-box">
+    <h2>📝 Register</h2>
+    <input type="text" id="name" placeholder="Your Name" required>
+    <input type="email" id="email" placeholder="Your Email" required>
+    <input type="password" id="password" placeholder="Password" required>
+    <button onclick="register()">Register</button>
+    <p id="message"></p>
+  </div>
+
+  <script>
+    // ← هنا هتحط رابط الـ Backend بتاعك من Render بعدين
+    const BACKEND_URL = 'https://your-backend-url.onrender.com';
+
+    async function register() {
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      try {
+        const response = await fetch(`${BACKEND_URL}/register`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, password })
+        });
+        const data = await response.json();
+        document.getElementById('message').textContent = 
+          response.ok ? '✅ Registered successfully!' : '❌ ' + data.error;
+        document.getElementById('message').style.color = response.ok ? 'green' : 'red';
+      } catch (err) {
+        document.getElementById('message').textContent = '❌ Connection error';
+      }
+    }
+  </script>
+</body>
+</html>
